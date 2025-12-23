@@ -1131,10 +1131,8 @@ public class VenAdministrador extends JFrame implements ActionListener, KeyListe
 	}
 	protected void do_btnRegistrarEmpleado_actionPerformed(ActionEvent e) {
 		try {
-			Date fecha = java.sql.Date.valueOf(LocalDate.now());
-			
-			if(txtIdEmpleado.getText().length()==0 && txtDniEmpleado.getText().length()==0 && txtNombreEmpleado.getText().length()==0
-					&& txtTelefono.getText().length()==0 && txtSueldo.getText().length()==0 && txtEstadoEmpleado.getText().length()==0
+			if(txtIdEmpleado.getText().length()==0 ||txtDniEmpleado.getText().length()==0 || txtNombreEmpleado.getText().length()==0
+					|| txtTelefono.getText().length()==0 || txtSueldo.getText().length()==0 || txtEstadoEmpleado.getText().length()==0
 					) {
 				JOptionPane.showMessageDialog(this, "Rellene todos los campos.");
 				return;
@@ -1150,6 +1148,7 @@ public class VenAdministrador extends JFrame implements ActionListener, KeyListe
 				JOptionPane.showMessageDialog(this, "El Teléfono debe tener 9 dígitos");
 				return;
 			}
+			Date fecha = java.sql.Date.valueOf(LocalDate.now());
 				
 			Empleado emple = new Empleado(Integer.parseInt(txtIdEmpleado.getText()), 
 					txtDniEmpleado.getText(), txtNombreEmpleado.getText(), 
@@ -1176,18 +1175,26 @@ public class VenAdministrador extends JFrame implements ActionListener, KeyListe
 	}
 	protected void do_btnModificarEmpleado_actionPerformed(ActionEvent e) {
 		try {
-			Date fecha = java.sql.Date.valueOf(LocalDate.now());
-			Empleado emple = new Empleado(Integer.parseInt(txtIdEmpleado.getText()), 
-					txtDniEmpleado.getText(), txtNombreEmpleado.getText(), 
-					txtTelefono.getText(), fecha, cboCargo.getSelectedItem().toString(), 
-					cboJornada.getSelectedItem().toString(), cboHorario.getSelectedItem().toString(), 
-					Double.parseDouble(txtSueldo.getText()), txtEstadoEmpleado.getText());
-				
-			 MantEmpleado me = new MantEmpleado();
-			 me.ModificarEmpleado(emple);
-			 ListarEmpleado(txtIdEmpleado.getText()); // Solo se mostrará ese empleado
-			 tablaEmpleado.setRowSelectionInterval(0, 0);
-			 LimpiarEmpleado();
+			if(txtIdEmpleado.getText().length()==0 ||txtDniEmpleado.getText().length()==0 || txtNombreEmpleado.getText().length()==0
+					|| txtTelefono.getText().length()==0 || txtSueldo.getText().length()==0 || txtEstadoEmpleado.getText().length()==0
+					) {
+				JOptionPane.showMessageDialog(this, "Rellene todos los campos.");
+				return;
+			}
+			else {
+				Date fecha = java.sql.Date.valueOf(LocalDate.now());
+				Empleado emple = new Empleado(Integer.parseInt(txtIdEmpleado.getText()), 
+						txtDniEmpleado.getText(), txtNombreEmpleado.getText(), 
+						txtTelefono.getText(), fecha, cboCargo.getSelectedItem().toString(), 
+						cboJornada.getSelectedItem().toString(), cboHorario.getSelectedItem().toString(), 
+						Double.parseDouble(txtSueldo.getText()), txtEstadoEmpleado.getText());
+					
+				 MantEmpleado me = new MantEmpleado();
+				 me.ModificarEmpleado(emple);
+				 ListarEmpleado(txtIdEmpleado.getText()); // Solo se mostrará ese empleado
+				 tablaEmpleado.setRowSelectionInterval(0, 0);
+				 LimpiarEmpleado();
+			}
 		}
 		catch(Exception e2){
 			JOptionPane.showMessageDialog(this, "Verifique los datos ingresados. Intente de nuevo.");
@@ -1314,33 +1321,36 @@ public class VenAdministrador extends JFrame implements ActionListener, KeyListe
 	}
 	protected void do_btnRegistrarProducto_actionPerformed(ActionEvent e) {
 		try {
-			if(txtIdProducto.getText().length() == 0 && txtCategoria.getText().length()== 0  && txtNombreProducto.getText().length()== 0 
-					&& txtGarantia.getText().length()== 0  && txtIdProveedor.getText().length()== 0
-					&& txtPrecio.getText().length()== 0  && txtCantProducto.getText().length()== 0) {
+			if(txtIdProducto.getText().length() == 0 || txtCategoria.getText().length()== 0  || txtNombreProducto.getText().length()== 0 
+					|| txtGarantia.getText().length()== 0  || txtIdProveedor.getText().length()== 0
+					|| txtPrecio.getText().length()== 0  || txtCantProducto.getText().length()== 0) {
 				JOptionPane.showMessageDialog(this, "Ingrese todos los datos para registrar");
 			}
 			else {
-			int idProveedor = Integer.parseInt(txtIdProveedor.getText());
-			Proveedor proveedor = new Proveedor(idProveedor);
-			MantProveedor mpv= new MantProveedor();
-		if(	mpv.BuscarProveedor(idProveedor) == null) {
-			JOptionPane.showMessageDialog(this, "Proveedor no encontrado");
-			return;}
-	
-			Producto p = new Producto(Integer.parseInt(txtIdProducto.getText()), 
-					txtCategoria.getText(), txtNombreProducto.getText(), 
-					txtGarantia.getText(), proveedor , Double.parseDouble(txtPrecio.getText()), 
-					Integer.parseInt(txtCantProducto.getText()));
-			
-			MantProducto mp = new MantProducto();
-			if(	mp.BuscarProducto(Integer.parseInt(txtIdProducto.getText())) != null) {
-				JOptionPane.showMessageDialog(this, "ID del producto ya registrado");
-				return;}
-			
-			mp.AgregarProducto(p);
-			ListarProducto("");
-			LimpiarProducto();
-			JOptionPane.showMessageDialog(this, "Producto Registrado");
+				int idProveedor = Integer.parseInt(txtIdProveedor.getText());
+				Proveedor proveedor = new Proveedor(idProveedor);
+				MantProveedor mpv= new MantProveedor();
+				
+				if(	mpv.BuscarProveedor(idProveedor) == null) {
+					JOptionPane.showMessageDialog(this, "Proveedor no encontrado");
+					return;
+				}
+		
+				Producto p = new Producto(Integer.parseInt(txtIdProducto.getText()), 
+						txtCategoria.getText(), txtNombreProducto.getText(), 
+						txtGarantia.getText(), proveedor , Double.parseDouble(txtPrecio.getText()), 
+						Integer.parseInt(txtCantProducto.getText()));
+				
+				MantProducto mp = new MantProducto();
+				
+				if(mp.BuscarProducto(Integer.parseInt(txtIdProducto.getText())) != null) {
+					JOptionPane.showMessageDialog(this, "ID del producto ya registrado");
+					return;}
+				
+				mp.AgregarProducto(p);
+				ListarProducto("");
+				LimpiarProducto();
+				JOptionPane.showMessageDialog(this, "Producto Registrado");
 			}
 							
 		} catch (Exception e2) {
@@ -1349,19 +1359,25 @@ public class VenAdministrador extends JFrame implements ActionListener, KeyListe
 	}
 	protected void do_btnModificarProducto_actionPerformed(ActionEvent e) {
 		try {
-			int idProveedor = Integer.parseInt(txtIdProveedor.getText());
-			Proveedor proveedor = new Proveedor(idProveedor);
-			 Producto p = new Producto(Integer.parseInt(txtIdProducto.getText()), 
-					 txtCategoria.getText(), txtNombreProducto.getText(), 
-					 txtGarantia.getText(), proveedor, Double.parseDouble(txtPrecio.getText()), 
-					 Integer.parseInt(txtCantProducto.getText()));
-				
-			 MantProducto mp = new MantProducto();
-			 mp.ModificarProducto(p);
-			 ListarProducto(txtIdProducto.getText()); // Solo se mostrará ese producto
-			 tablaProducto.setRowSelectionInterval(0, 0);
-			 LimpiarProducto();
-			 
+			if(txtIdProducto.getText().length() == 0 || txtCategoria.getText().length()== 0  || txtNombreProducto.getText().length()== 0 
+					|| txtGarantia.getText().length()== 0  || txtIdProveedor.getText().length()== 0
+					|| txtPrecio.getText().length()== 0  || txtCantProducto.getText().length()== 0) {
+				JOptionPane.showMessageDialog(this, "Ingrese todos los datos para modificar");
+			}
+			else {
+				int idProveedor = Integer.parseInt(txtIdProveedor.getText());
+				Proveedor proveedor = new Proveedor(idProveedor);
+				 Producto p = new Producto(Integer.parseInt(txtIdProducto.getText()), 
+						 txtCategoria.getText(), txtNombreProducto.getText(), 
+						 txtGarantia.getText(), proveedor, Double.parseDouble(txtPrecio.getText()), 
+						 Integer.parseInt(txtCantProducto.getText()));
+					
+				 MantProducto mp = new MantProducto();
+				 mp.ModificarProducto(p);
+				 ListarProducto(txtIdProducto.getText()); // Solo se mostrará ese producto
+				 tablaProducto.setRowSelectionInterval(0, 0);
+				 LimpiarProducto();
+			}
 		 } catch(Exception e2){
 			 JOptionPane.showMessageDialog(this, "Verifique el ID ingresado. Intente de nuevo.");	 
 		 }	 
@@ -1377,7 +1393,7 @@ public class VenAdministrador extends JFrame implements ActionListener, KeyListe
 	}
 	protected void do_btnRegistrarStock_actionPerformed(ActionEvent e) {	
 		try {
-			if(txtIdProdStock.getText().length() == 0 && txtCantStock.getText().length()== 0 ) {
+			if(txtIdProdStock.getText().length() == 0 || txtCantStock.getText().length()== 0 ) {
 				JOptionPane.showMessageDialog(this, "Ingrese todos los datos para registrar el nuevo stock");
 			}
 			else {
@@ -1593,10 +1609,10 @@ public class VenAdministrador extends JFrame implements ActionListener, KeyListe
 	}
 	protected void do_btnRegistrarProveedor_actionPerformed(ActionEvent e) {
 		try {
-			if(txtIDProveedor.getText().length() == 0 && txtRucProveedor.getText().length()== 0 &&
-					txtNombreProveedor.getText().length() == 0 && txtTelefonoProveedor.getText().length()== 0 &&
-					txtCorreoProveedor.getText().length() == 0 && txtDireccionProveedor.getText().length()== 0
-					&& txtEstadoProveedor.getText().length()== 0) {
+			if(txtIDProveedor.getText().length() == 0 || txtRucProveedor.getText().length()== 0 ||
+					txtNombreProveedor.getText().length() == 0 || txtTelefonoProveedor.getText().length()== 0 ||
+					txtCorreoProveedor.getText().length() == 0 || txtDireccionProveedor.getText().length()== 0 ||
+					txtEstadoProveedor.getText().length()== 0) {
 				JOptionPane.showMessageDialog(this, "Ingrese todos los datos para registrar");
 			}
 			else {
@@ -1631,17 +1647,24 @@ public class VenAdministrador extends JFrame implements ActionListener, KeyListe
 	}
 	protected void do_btnModificarProveedor_actionPerformed(ActionEvent e) {
 		try {
-			Date fecha = java.sql.Date.valueOf(LocalDate.now());
-			Proveedor prov = new Proveedor(Integer.parseInt(txtIDProveedor.getText()), 
-					txtRucProveedor.getText(), txtNombreProveedor.getText(), 
-					txtTelefonoProveedor.getText(), txtCorreoProveedor.getText(), 
-					txtDireccionProveedor.getText(), txtEstadoProveedor.getText(), fecha);
-			
-			MantProveedor mprov = new MantProveedor();
-			mprov.ModificarProveedor(prov);
-			LimpiarProveedor();
-			ListarProveedor(""); 
-			
+			if(txtIDProveedor.getText().length() == 0 || txtRucProveedor.getText().length()== 0 ||
+					txtNombreProveedor.getText().length() == 0 || txtTelefonoProveedor.getText().length()== 0 ||
+					txtCorreoProveedor.getText().length() == 0 || txtDireccionProveedor.getText().length()== 0 ||
+					txtEstadoProveedor.getText().length()== 0) {
+				JOptionPane.showMessageDialog(this, "Ingrese todos los datos para registrar");
+			}
+			else {
+				Date fecha = java.sql.Date.valueOf(LocalDate.now());
+				Proveedor prov = new Proveedor(Integer.parseInt(txtIDProveedor.getText()), 
+						txtRucProveedor.getText(), txtNombreProveedor.getText(), 
+						txtTelefonoProveedor.getText(), txtCorreoProveedor.getText(), 
+						txtDireccionProveedor.getText(), txtEstadoProveedor.getText(), fecha);
+				
+				MantProveedor mprov = new MantProveedor();
+				mprov.ModificarProveedor(prov);
+				LimpiarProveedor();
+				ListarProveedor(""); 
+			}	
 		} catch (Exception e2) {
 			JOptionPane.showMessageDialog(this, "Verifique los datos ingresados. Intente de nuevo.");
 		}

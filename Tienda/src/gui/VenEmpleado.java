@@ -1424,7 +1424,7 @@ private JLabel lblVendedor;
 	}
 	protected void do_btnRegistrarCliente_actionPerformed(ActionEvent e) {
 		try {
-			if(txtDniCliente.getText().length()==0 && txtNombreCliente.getText().length()==0 && txtTelefonoCliente.getText().length()==0) {
+			if(txtDniCliente.getText().length()==0 || txtNombreCliente.getText().length()==0 || txtTelefonoCliente.getText().length()==0) {
 				JOptionPane.showMessageDialog(this, "Rellene todos los campos.");
 			}
 			
